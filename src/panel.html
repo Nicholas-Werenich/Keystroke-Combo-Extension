@@ -1,0 +1,122 @@
+<html>
+
+<!--
+    Inline CSS and JavaScript for panel
+-->
+
+<head>
+    <style>
+        body {
+            background: #0d0014;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: monospace;
+        }
+
+        .jelly-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+
+        svg.jelly {
+            width: 160px;
+            height: 160px;
+            overflow: visible;
+        }
+
+        #currentPoints {
+            font-size: 13px;
+            color: #a78bfa;
+            margin-top: 12px;
+        }
+
+        #totalPoints {
+            font-size: 22px;
+            color: #f5f3ff;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Score:</h2>
+
+    <div class="jelly-container">
+        <svg class="jelly" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <clipPath id="jellyClip">
+                    <circle cx="80" cy="80" r="62" />
+                </clipPath>
+            </defs>
+
+            <circle cx="80" cy="80" r="70" fill="none" stroke="#a78bfa" stroke-width="4" opacity="0.15" />
+            <circle cx="80" cy="80" r="65" fill="#7c3aed" opacity="0.12" />
+            <circle cx="80" cy="80" r="62" fill="#7c3aed" opacity="0.20" />
+            <circle cx="80" cy="80" r="62" fill="#4c1d95" opacity="0.30" />
+
+            <circle id="arcFill" cx="80" cy="80" r="46" fill="none" stroke="#a78bfa" stroke-width="28"
+                stroke-linecap="butt" opacity="0.55" stroke-dasharray="289 289" transform="rotate(-90 80 80)"
+                clip-path="url(#jellyClip)" />
+
+            <circle cx="80" cy="80" r="32" fill="#4c1d95" opacity="0.85" />
+            <circle cx="80" cy="80" r="30" fill="#2e1065" opacity="0.6" />
+
+            <circle id="timerRing" cx="80" cy="80" r="46" fill="none" stroke="#e9d5ff" stroke-width="1.5"
+                opacity="0.5" />
+
+            <ellipse cx="62" cy="50" rx="16" ry="9" fill="white" opacity="0.10" transform="rotate(-20 62 50)" />
+
+            <text x="80" y="84" text-anchor="middle" dominant-baseline="middle" font-size="28" font-weight="700"
+                fill="#f5f3ff" font-family="monospace" id="multText">1.0x</text>
+        </svg>
+    </div>
+
+    <h1 id="currentPoints">0</h1>
+    <h2 id="totalPoints">0</h2>
+
+    <script>
+        let maxTime = 0;
+
+        const RADIUS = 46;
+        const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+
+        //DOM elements
+        const arcFill = document.getElementById('arcFill');
+        const timerRing = document.getElementById('timerRing');
+        const multText = document.getElementById('multText');
+        const pointsLabel = document.getElementById('currentPoints');
+        const scoreLabel = document.getElementById('totalPoints');
+
+        window.addEventListener('message', (event) => {
+            const { type, time, multiplier, currentPoints, totalPoints } = event.data;
+
+            if (type === "setup") {
+                maxTime = time;
+            } else {
+                //Animate timer circle decreasing
+                const pct = Math.max(0, time / maxTime);
+                const filled = CIRCUMFERENCE * pct;
+                arcFill.setAttribute('stroke-dasharray', `${filled} ${CIRCUMFERENCE}`);
+
+                const color = pct > 0.5 ? '#a78bfa' : pct > 0.25 ? '#f59e0b' : '#ef4444';
+                arcFill.setAttribute('stroke', color);
+                timerRing.setAttribute('stroke', pct > 0.5 ? '#e9d5ff' : color);
+
+                //Update text
+                if (type === "update") {
+                    multText.textContent = multiplier.toFixed(1) + 'x';
+                    pointsLabel.textContent = currentPoints + ' pts';
+                    scoreLabel.textContent = totalPoints + ' pts';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
