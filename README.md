@@ -8,12 +8,12 @@ Default is 5 points per character and 10 points per new line.
 Opening a new pair of brackets (any kind) adds a 0.5 to your multiplyer.
 Typing or deleting characters resets your timer, when the timer runs out your multiplyer is reset and your combo is added to your score.
 
-![Panel View\]\(assets/Demo.gif\)
+![Panel View](assets/Demo.gif)
 
 Pop ups for adding points and breaking combo.
 Inline effects while typing.
 
-![Notification View\]\(assets/Notification Pop Ups.png\)
+![Notification View](assets/Notification-Pop-Ups.png)
 
 ## Extension Settings
 
