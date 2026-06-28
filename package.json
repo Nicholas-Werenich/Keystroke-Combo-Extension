@@ -3,6 +3,11 @@
   "displayName": "Keystroke Combo",
   "description": "A trick point extension for keystrokes when working in VS Code. Rad sound affects and visuals included.",
   "version": "0.0.1",
+  "icon": "assets/Door Knob.png",
+  "galleryBanner.color": {
+    "color": "#8737B3",
+    "theme": "dark"
+  },
   "engines": {
     "vscode": "^1.120.0"
   },

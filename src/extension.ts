@@ -102,8 +102,6 @@ export function activate(context: vscode.ExtensionContext) {
 		for (const change of event.contentChanges) {
 			const text = change.text;
 
-			vscode.window.showWarningMessage(change.text);
-
 			if (text === "\n" || text === '\r\n') {
 				popUpPoints(largePoints, multiplier, countdownLength, change.range);
 			} else if (text === "") {
